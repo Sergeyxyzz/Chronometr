@@ -72,6 +72,23 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(savedInstanceState)
     }
 
+    override fun onPause() { // функция жизненного цикла остановки активности, секундомер останавливается, когда активность становится невидимой
+        super.onPause() // метод супер класса, должен быть по умолчанию
+        if (running) {
+            saveOffset() // сохранили последнее значение секундомера
+            stopwatch.stop() // остановили секундомер
+        }
+    }
+
+    override fun onResume() { // вызывается тогда, когда активность ставшая невидимой, снова появляется на экране
+        super.onResume()
+        if (running) {
+            setBaseTime()
+            stopwatch.start()
+            offset = 0
+        }
+    }
+
     // обновляет время stopwatch.base
     fun setBaseTime() {
         stopwatch.base = SystemClock.elapsedRealtime() - offset
